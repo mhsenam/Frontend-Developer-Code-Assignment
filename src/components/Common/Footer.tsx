@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
     <Box
       component="footer"
       sx={{
-        bgcolor: "#f8fafc",
+        bgcolor: (theme) => theme.palette.background.paper,
         pt: { xs: 6, md: 8 },
         pb: { xs: 6, md: 6 },
         borderTop: "1px solid",

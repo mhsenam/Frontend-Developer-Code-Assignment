@@ -15,13 +15,23 @@ import {
   useTheme,
   Container,
   Avatar,
+  Select,
+  MenuItem,
+  FormControl,
+  SelectChangeEvent,
 } from "@mui/material";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useThemeMode } from "../../context/ThemeModeContext";
+import { useTranslation } from "react-i18next";
 
 const Navbar: React.FC = () => {
   const location = useLocation();
   const theme = useTheme();
+  const { mode, toggleThemeMode } = useThemeMode();
+  const { t, i18n } = useTranslation();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -33,10 +43,15 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
+  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
+    const lang = event.target.value as string;
+    i18n.changeLanguage(lang);
+  };
+
   const navItems = [
-    { label: "Home", path: "/" },
-    { label: "Apply", path: "/apply" },
-    { label: "Submissions", path: "/submissions" },
+    { label: t("nav.home"), path: "/" },
+    { label: t("nav.apply"), path: "/apply" },
+    { label: t("nav.submissions"), path: "/submissions" },
   ];
 
   const drawer = (
@@ -62,6 +77,36 @@ const Navbar: React.FC = () => {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem
+          disablePadding
+          sx={{ display: "flex", justifyContent: "center", py: 1 }}
+        >
+          <IconButton onClick={toggleThemeMode} color="primary">
+            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </ListItem>
+        <ListItem
+          disablePadding
+          sx={{ display: "flex", justifyContent: "center", py: 1 }}
+        >
+          <FormControl size="small" sx={{ minWidth: 100 }}>
+            <Select
+              value={i18n.language.split("-")[0]}
+              onChange={handleLanguageChange}
+              variant="outlined"
+              sx={{
+                color: theme.palette.text.primary,
+                ".MuiSvgIcon-root": { color: theme.palette.text.primary },
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.action.disabled,
+                },
+              }}
+            >
+              <MenuItem value={"en"}>EN</MenuItem>
+              <MenuItem value={"es"}>ES</MenuItem>
+            </Select>
+          </FormControl>
+        </ListItem>
       </List>
     </Box>
   );
@@ -71,7 +116,7 @@ const Navbar: React.FC = () => {
       position="sticky"
       elevation={0}
       sx={{
-        bgcolor: "white",
+        bgcolor: theme.palette.background.paper,
         borderBottom: "1px solid",
         borderColor: "divider",
       }}
@@ -134,6 +179,7 @@ const Navbar: React.FC = () => {
               display: { xs: "none", md: "flex" },
               justifyContent: "flex-end",
               flexGrow: 1,
+              alignItems: "center",
             }}
           >
             {navItems.map((item) => (
@@ -170,6 +216,51 @@ const Navbar: React.FC = () => {
                 {item.label}
               </Button>
             ))}
+
+            {/* Theme Toggle Button */}
+            <IconButton
+              sx={{ ml: 1 }}
+              onClick={toggleThemeMode}
+              color="primary"
+            >
+              {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+
+            {/* Language Switcher */}
+            <FormControl size="small" sx={{ m: 1, minWidth: 80 }}>
+              <Select
+                value={i18n.language.split("-")[0]}
+                onChange={handleLanguageChange}
+                sx={{
+                  color: "text.primary",
+                  ".MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.5)"
+                        : "rgba(0, 0, 0, 0.23)",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "white"
+                        : theme.palette.text.primary,
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "white"
+                        : theme.palette.primary.main,
+                  },
+                  ".MuiSvgIcon-root": {
+                    color: "text.primary",
+                  },
+                }}
+                variant="outlined"
+              >
+                <MenuItem value={"en"}>EN</MenuItem>
+                <MenuItem value={"es"}>ES</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </Toolbar>
       </Container>

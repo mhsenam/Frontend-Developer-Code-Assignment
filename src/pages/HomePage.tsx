@@ -7,13 +7,20 @@ import {
   CardContent,
   Grid as MuiGrid,
   Paper,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../context/FormContext";
+import { useTranslation } from "react-i18next";
+import SpeedIcon from "@mui/icons-material/Speed";
+import TuneIcon from "@mui/icons-material/Tune";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { formSchemas, loading, error, setSelectedFormId } = useFormContext();
+  const { t } = useTranslation();
+  const theme = useTheme();
 
   const handleApplyClick = (formId: string) => {
     setSelectedFormId(formId);
@@ -24,14 +31,17 @@ const HomePage: React.FC = () => {
     <Box>
       <Paper
         elevation={0}
-        sx={{ p: 5, mb: 4, borderRadius: 2, backgroundColor: "#f5f5f5" }}
+        sx={{
+          p: 5,
+          mb: 4,
+          borderRadius: 2,
+        }}
       >
         <Typography variant="h3" component="h1" gutterBottom>
-          Welcome to Smart Insurance Portal
+          {t("home.welcome")}
         </Typography>
         <Typography variant="h6" color="textSecondary" paragraph>
-          Protect what matters most with our tailored insurance solutions.
-          Complete your application online in minutes.
+          {t("home.tagline")}
         </Typography>
         <Button
           variant="contained"
@@ -40,7 +50,7 @@ const HomePage: React.FC = () => {
           onClick={() => navigate("/apply")}
           sx={{ mt: 2 }}
         >
-          Get Started
+          {t("home.getStarted")}
         </Button>
       </Paper>
 
@@ -50,11 +60,11 @@ const HomePage: React.FC = () => {
         gutterBottom
         sx={{ mt: 6, mb: 3 }}
       >
-        Our Insurance Products
+        {t("home.ourProducts")}
       </Typography>
 
       {loading ? (
-        <Typography>Loading available insurance products...</Typography>
+        <Typography>{t("home.loadingProducts")}</Typography>
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : (
@@ -86,7 +96,7 @@ const HomePage: React.FC = () => {
                     color="primary"
                     onClick={() => handleApplyClick(form.id)}
                   >
-                    Apply Now
+                    {t("home.applyNow")}
                   </Button>
                 </CardContent>
               </Card>
@@ -96,62 +106,80 @@ const HomePage: React.FC = () => {
       )}
 
       <Box mt={8} mb={4}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Why Choose Us?
+        <Typography variant="h4" component="h2" gutterBottom textAlign="center">
+          {t("home.whyChooseUs")}
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 4,
-            mt: 2,
-          }}
-        >
-          <Box
-            sx={{
-              width: { xs: "100%", md: "calc(33.33% - 16px)" },
-              textAlign: "center",
-              p: 2,
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Fast & Easy
-            </Typography>
-            <Typography>
-              Complete your application online in minutes with our intuitive
-              form process.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: { xs: "100%", md: "calc(33.33% - 16px)" },
-              textAlign: "center",
-              p: 2,
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Customized Coverage
-            </Typography>
-            <Typography>
-              Tailored insurance solutions designed to meet your specific needs.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: { xs: "100%", md: "calc(33.33% - 16px)" },
-              textAlign: "center",
-              p: 2,
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              24/7 Support
-            </Typography>
-            <Typography>
-              Our customer service team is available around the clock to assist
-              you.
-            </Typography>
-          </Box>
-        </Box>
+        <MuiGrid container spacing={4} mt={2} justifyContent="center">
+          {[
+            {
+              icon: (
+                <SpeedIcon
+                  sx={{
+                    fontSize: 40,
+                    color: theme.palette.primary.main,
+                    mb: 1,
+                  }}
+                />
+              ),
+              titleKey: "home.fastEasy",
+              descKey: "home.fastEasyDesc",
+            },
+            {
+              icon: (
+                <TuneIcon
+                  sx={{
+                    fontSize: 40,
+                    color: theme.palette.primary.main,
+                    mb: 1,
+                  }}
+                />
+              ),
+              titleKey: "home.customizedCoverage",
+              descKey: "home.customizedCoverageDesc",
+            },
+            {
+              icon: (
+                <SupportAgentIcon
+                  sx={{
+                    fontSize: 40,
+                    color: theme.palette.primary.main,
+                    mb: 1,
+                  }}
+                />
+              ),
+              titleKey: "home.support247",
+              descKey: "home.support247Desc",
+            },
+          ].map((item, index) => (
+            <MuiGrid item xs={12} sm={6} md={4} key={index}>
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 3,
+                  textAlign: "center",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                {item.icon}
+                <Typography
+                  variant="h6"
+                  component="h3"
+                  gutterBottom
+                  sx={{ mt: 1 }}
+                >
+                  {t(item.titleKey)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {t(item.descKey)}
+                </Typography>
+              </Paper>
+            </MuiGrid>
+          ))}
+        </MuiGrid>
       </Box>
     </Box>
   );

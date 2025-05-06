@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
-import { 
-  Typography, 
-  Box, 
-  Paper, 
-  CircularProgress, 
-  Alert, 
-  FormControl, 
-  InputLabel, 
-  Select, 
+import React, { useState } from "react";
+import {
+  Typography,
+  Box,
+  Paper,
+  CircularProgress,
+  Alert,
+  FormControl,
+  InputLabel,
+  Select,
   MenuItem,
-  SelectChangeEvent
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { FormRenderer } from '../components/FormRenderer';
-import { useFormContext } from '../context/FormContext';
+  SelectChangeEvent,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { FormRenderer } from "../components/FormRenderer";
+import { useFormContext } from "../context/FormContext";
+import { useTranslation } from "react-i18next";
 
 const ApplicationPage: React.FC = () => {
   const navigate = useNavigate();
-  const { formSchemas, selectedFormId, setSelectedFormId, loading, error } = useFormContext();
+  const { formSchemas, selectedFormId, setSelectedFormId, loading, error } =
+    useFormContext();
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const { t } = useTranslation();
 
   const handleFormChange = (event: SelectChangeEvent<string>) => {
     setSelectedFormId(event.target.value);
@@ -28,7 +31,7 @@ const ApplicationPage: React.FC = () => {
     setSubmitSuccess(true);
     // Navigate to submissions page after a delay
     setTimeout(() => {
-      navigate('/submissions');
+      navigate("/submissions");
     }, 2000);
   };
 
@@ -37,7 +40,7 @@ const ApplicationPage: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        Insurance Application
+        {t("application.title")}
       </Typography>
 
       {loading ? (
@@ -52,18 +55,20 @@ const ApplicationPage: React.FC = () => {
         <>
           {submitSuccess ? (
             <Alert severity="success" sx={{ my: 2 }}>
-              Your application has been submitted successfully! Redirecting to submissions page...
+              {t("application.formSubmittedSuccess")}
             </Alert>
           ) : (
             <>
               <Paper sx={{ p: 3, mb: 4 }}>
                 <FormControl fullWidth sx={{ mb: 4 }}>
-                  <InputLabel id="form-select-label">Select Insurance Type</InputLabel>
+                  <InputLabel id="form-select-label">
+                    {t("application.selectInsuranceType")}
+                  </InputLabel>
                   <Select
                     labelId="form-select-label"
                     id="form-select"
-                    value={selectedFormId || ''}
-                    label="Select Insurance Type"
+                    value={selectedFormId || ""}
+                    label={t("application.selectInsuranceType")}
                     onChange={handleFormChange}
                   >
                     {formSchemas.map((form) => (
@@ -90,4 +95,4 @@ const ApplicationPage: React.FC = () => {
   );
 };
 
-export default ApplicationPage; 
+export default ApplicationPage;
