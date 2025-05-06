@@ -33,8 +33,7 @@
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "jest",
-    "eject": "react-scripts eject",
-    "install": "npm install --legacy-peer-deps"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
