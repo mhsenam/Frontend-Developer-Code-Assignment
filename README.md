@@ -1,46 +1,74 @@
-# Getting Started with Create React App
+# Smart Insurance Application Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React application for managing insurance applications. This project provides a user-friendly interface for customers to apply for different insurance products and track their submissions.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Dynamic form rendering based on form schema received from the API
+- Form validation with yup schema validation
+- Form field dependencies (conditional fields)
+- Submissions list view with sorting, filtering, and pagination
+- Responsive design for mobile and desktop
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React.js with TypeScript
+- Material UI for components and styling
+- Tailwind CSS for utility classes
+- React Router for navigation
+- React Hook Form for form management
+- Yup for schema validation
+- Axios for API communication
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Project Structure
 
-### `npm test`
+```
+src/
+├── components/
+│   ├── Common/            # Shared components (Navbar, Footer, Layout)
+│   ├── FormRenderer/      # Components for rendering dynamic forms
+│   └── ListView/          # Components for displaying data in table format
+├── context/               # React context for state management
+├── hooks/                 # Custom React hooks
+├── pages/                 # Page components for each route
+├── services/              # API and other service functions
+└── utils/                 # Utility functions and helpers
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation and Setup
 
-### `npm run build`
+1. Clone the repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm start
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) to view the app in the browser
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## API Integration
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The application connects to the backend API at `https://assignment.devotel.io` with the following endpoints:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `GET /api/insurance/forms` - Get available form schemas
+- `POST /api/insurance/forms/submit` - Submit a form
+- `GET /api/insurance/forms/submissions` - Get list of submitted forms
 
-### `npm run eject`
+## Development Guide
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Adding New Form Fields
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To support new field types in the form renderer, add a new case in the `renderFieldByType` function in `FormField.tsx`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Adding New Features
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Create components in the appropriate directory
+2. Add any needed API calls to the `api.ts` service
+3. Create or update page components as needed
+4. Update routing in `App.tsx` if adding new pages
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project is licensed under the MIT License. 
